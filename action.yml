@@ -1,0 +1,27 @@
+name: "Is User a Member of any Team"
+description: |
+  This action will take the username and a list of team names in format <org>/<team>
+  And then perform an api Query to fetch the team metadata and evaluate whether the user
+  is a member of any of them.
+
+  Then it will set a boolean result as output
+inputs:
+  token:
+    description: "Github Api token with repo scope, e.g. secrets.GITHUB_TOKEN"
+    required: true
+  username:
+    description: "Username of the github user to check: anyuser3445"
+    required: true
+  teams:
+    description: "Comma-sparated list of teams to check membership: org/team1,org/team2"
+    required: true
+  varName:
+    description: "If given, then action will export the result as this env Var"
+    required: false
+    default: USER_IS_MEMBER
+outputs:
+  ismember:
+    description: "true if user is member of one or more teams"
+runs:
+  using: "node12"
+  main: "dist/index.cjs.js"
