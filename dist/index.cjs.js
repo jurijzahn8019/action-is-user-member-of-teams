@@ -18432,6 +18432,7 @@ async function run() {
         }
         else {
             dbg("User %s is not member of any of given teams", username);
+            core.info(`User ${username} is not member of any given team`);
         }
         core.setOutput("ismember", !!res);
         core.exportVariable(varName, !!res);

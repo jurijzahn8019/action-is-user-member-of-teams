@@ -92,6 +92,7 @@ export async function run(): Promise<void> {
       info(`User ${res.user} is member of team ${res.team}`);
     } else {
       dbg("User %s is not member of any of given teams", username);
+      info(`User ${username} is not member of any given team`);
     }
 
     setOutput("ismember", !!res);
