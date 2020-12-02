@@ -14,7 +14,7 @@ jobs:
       - name: Check Tag
         run: |
           if [[ $GITHUB_REF =~ ^refs\/tags\/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then 
-            echo "::debug::This is a Release";
+            echo "::debug::This is a Release"
             echo "IS_RELEASE=true" >> $GITHUB_ENV
           else 
             echo "::debug::This is a Pre-Release"; 
