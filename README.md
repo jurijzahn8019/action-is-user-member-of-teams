@@ -32,7 +32,15 @@ If given, then action will export the result as this env Var `USER_IS_MEMBER`.
 
 ### `ismember`
 
-true if user is member of one or more teams
+true if any user is member of one or more teams
+
+### `userName`
+
+Username of the first found user who is member of a team
+
+### `teamName`
+
+Team name in case the user's team was found
 
 ## Example usage
 
@@ -50,7 +58,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           username: ${{ github.event.assignee.login }}
           teams: my-org/team1, myorg2/team-b
-          varName: USER_IS_MEMBER
 
       - name: Do Something if user is one of my teams
         if: ${{ steps.checker.outputs.ismember }}
@@ -61,9 +68,15 @@ jobs:
 ## Test run
 
 ```bash
-DEBUG=* \
-  INPUT_TOKEN=FOOOOO \
+DEBUG=action-is-user-member-of-teams* \
+  INPUT_TOKEN=$GITHUB_TOKEN \
   INPUT_USERNAME=foobar \
   INPUT_TEAMS=foo/bar \
-  node dist/index.cjs.js
+  ts-node src/index.ts
+
+DEBUG=action-is-user-member-of-teams* \
+  INPUT_TOKEN=$GITHUB_TOKEN
+  INPUT_USERNAME=thefooBar,jurijzahn8019 \
+  INPUT_TEAMS=myorg/myteam \
+  ts-node src/index.ts
 ```

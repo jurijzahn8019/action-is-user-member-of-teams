@@ -10,7 +10,12 @@ inputs:
     description: "Github Api token with repo scope, e.g. secrets.GITHUB_TOKEN"
     required: true
   username:
-    description: "Username of the github user to check: anyuser3445"
+    description: |
+      Username of the github user to check: anyuser3445
+      Can also be comma separated list of users user1,user2
+
+      This action returns true if any user is a member of any team
+      First match results to true
     required: true
   teams:
     description: "Comma-sparated list of teams to check membership: org/team1,org/team2"
@@ -22,6 +27,10 @@ inputs:
 outputs:
   ismember:
     description: "true if user is member of one or more teams"
+  userName:
+    description: Username of the first found user who is member of a team 
+  teamName:
+    description: Team name in case the user's team was found
 runs:
   using: "node12"
   main: "dist/index.cjs.js"

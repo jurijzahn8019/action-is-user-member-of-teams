@@ -18378,13 +18378,15 @@ if (typeof process === 'undefined' || process.type === 'renderer' || process.bro
 });
 
 /* eslint-disable camelcase */
-const dbg = src("action-dependabot-labels:index");
+const dbg = src("action-is-user-member-of-teams:index");
 async function run() {
     dbg("Check whether user is memebr of teams");
     try {
         dbg("Retrieve inputs");
         const token = core.getInput("token", { required: true });
-        const username = core.getInput("username", { required: true });
+        const usernames = core.getInput("username", { required: true })
+            .split(",")
+            .map((u) => u.trim());
         const varName = core.getInput("varName", { required: false }) || "USER_IS_MEMBER";
         const teams = core.getInput("teams", { required: true })
             .split(",")
@@ -18425,14 +18427,18 @@ async function run() {
             .flat(4);
         dbg("Apply team filter to the users list");
         const filtered = users.filter(({ team }) => teams.some((t) => team === t.team));
-        const res = filtered.find((u) => username === u.user);
+        const res = filtered.find((u) => usernames.find((un) => un === u.user));
         if (res) {
             dbg("User %s is member of given team: %s", res.user, res.team);
-            core.info(`User ${res.user} is member of team ${res.team}`);
+            core.info(`Found User ${res.user} is member of team ${res.team}`);
+            core.setOutput("teamName", res.team);
+            core.setOutput("userName", res.user);
         }
         else {
-            dbg("User %s is not member of any of given teams", username);
-            core.info(`User ${username} is not member of any given team`);
+            dbg("Users %s not member of any of given teams", usernames.join(","));
+            core.info(`Users ${usernames.join(",")} not member of ${teams.join(",")}`);
+            core.setOutput("teamName", undefined);
+            core.setOutput("userName", undefined);
         }
         core.setOutput("ismember", !!res);
         core.exportVariable(varName, !!res);

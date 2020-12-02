@@ -9,14 +9,16 @@ import {
 import { getOctokit } from "@actions/github";
 import debug from "debug";
 
-const dbg = debug("action-dependabot-labels:index");
+const dbg = debug("action-is-user-member-of-teams:index");
 
 export async function run(): Promise<void> {
   dbg("Check whether user is memebr of teams");
   try {
     dbg("Retrieve inputs");
     const token = getInput("token", { required: true });
-    const username = getInput("username", { required: true });
+    const usernames = getInput("username", { required: true })
+      .split(",")
+      .map((u) => u.trim());
     const varName =
       getInput("varName", { required: false }) || "USER_IS_MEMBER";
     const teams = getInput("teams", { required: true })
@@ -86,13 +88,19 @@ export async function run(): Promise<void> {
       teams.some((t) => team === t.team)
     );
 
-    const res = filtered.find((u) => username === u.user);
+    const res = filtered.find((u) => usernames.find((un) => un === u.user));
     if (res) {
       dbg("User %s is member of given team: %s", res.user, res.team);
-      info(`User ${res.user} is member of team ${res.team}`);
+      info(`Found User ${res.user} is member of team ${res.team}`);
+
+      setOutput("teamName", res.team);
+      setOutput("userName", res.user);
     } else {
-      dbg("User %s is not member of any of given teams", username);
-      info(`User ${username} is not member of any given team`);
+      dbg("Users %s not member of any of given teams", usernames.join(","));
+      info(`Users ${usernames.join(",")} not member of ${teams.join(",")}`);
+
+      setOutput("teamName", undefined);
+      setOutput("userName", undefined);
     }
 
     setOutput("ismember", !!res);
