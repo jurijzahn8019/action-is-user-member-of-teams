@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/jurijzahn8019/action-is-user-member-of-teams/compare/v0.0.2...v0.0.3) (2020-12-02)
+
+
+### Features
+
+* **action:** add possibility to use multiple usernames ([b118333](https://github.com/jurijzahn8019/action-is-user-member-of-teams/commit/b1183330d7555d09b3fa0558fe74b07e255b9d47))
+
 ### 0.0.2 (2020-11-13)
 
 
