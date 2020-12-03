@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/jurijzahn8019/action-is-user-member-of-teams/compare/v0.0.3...v0.0.4) (2020-12-03)
+
+
+### Bug Fixes
+
+* **action:** fix outputs and debug ([23a6edd](https://github.com/jurijzahn8019/action-is-user-member-of-teams/commit/23a6edd3850accbfd5a539cf1998168395dd6fda))
+
 ### [0.0.3](https://github.com/jurijzahn8019/action-is-user-member-of-teams/compare/v0.0.2...v0.0.3) (2020-12-02)
 
 
