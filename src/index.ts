@@ -27,7 +27,7 @@ export async function run(): Promise<void> {
         const [org, team] = t.trim().split("/");
         return { org, team };
       });
-    dbg("Check user: %s in teams: %o", teams);
+    dbg("Check users: %o in teams: %o", usernames, teams);
 
     dbg("Fetch teams by name and org");
     const byOrg = [] as { name: string; teams: string[] }[];
@@ -51,7 +51,9 @@ export async function run(): Promise<void> {
         return `${teamkey}: teams(first: 100, query: "${t}") { ...Teams }`;
       });
 
-      return `${orgKey}: organization(login: "${name}") { ${tqs.join("\n")} }`;
+      return `${orgKey}: organization(login: "${name}") { name ${tqs.join(
+        "\n"
+      )} }`;
     });
 
     const query = `fragment Teams on TeamConnection {
@@ -72,15 +74,21 @@ export async function run(): Promise<void> {
       >
     >(query);
 
-    dbg("Process result data");
+    dbg("Process result data: %o", data);
     const users = Object.values(data)
-      .map((org) =>
-        Object.values(org).map((orgTeams) =>
+      .map((org) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { name, ...tdata } = org;
+        return Object.values(tdata).map((orgTeams) =>
           orgTeams.nodes.map((t) =>
-            t.members.nodes.map((user) => ({ team: t.name, user: user.name }))
+            t.members.nodes.map((user) => ({
+              org: org.name,
+              team: t.name,
+              user: user.name,
+            }))
           )
-        )
-      )
+        );
+      })
       .flat(4);
 
     dbg("Apply team filter to the users list");
@@ -93,12 +101,18 @@ export async function run(): Promise<void> {
       dbg("User %s is member of given team: %s", res.user, res.team);
       info(`Found User ${res.user} is member of team ${res.team}`);
 
+      setOutput("orgName", res.org);
       setOutput("teamName", res.team);
       setOutput("userName", res.user);
     } else {
       dbg("Users %s not member of any of given teams", usernames.join(","));
-      info(`Users ${usernames.join(",")} not member of ${teams.join(",")}`);
+      info(
+        `Users ${usernames.join(",")} not member of ${teams
+          .map((t) => `${t.org}/${t.team}`)
+          .join(" or ")}`
+      );
 
+      setOutput("orgName", undefined);
       setOutput("teamName", undefined);
       setOutput("userName", undefined);
     }

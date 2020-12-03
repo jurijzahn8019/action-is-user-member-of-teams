@@ -18394,7 +18394,7 @@ async function run() {
             const [org, team] = t.trim().split("/");
             return { org, team };
         });
-        dbg("Check user: %s in teams: %o", teams);
+        dbg("Check users: %o in teams: %o", usernames, teams);
         dbg("Fetch teams by name and org");
         const byOrg = [];
         teams.forEach((t) => {
@@ -18413,7 +18413,7 @@ async function run() {
                 const teamkey = t.replace(/\W/g, "_");
                 return `${teamkey}: teams(first: 100, query: "${t}") { ...Teams }`;
             });
-            return `${orgKey}: organization(login: "${name}") { ${tqs.join("\n")} }`;
+            return `${orgKey}: organization(login: "${name}") { name ${tqs.join("\n")} }`;
         });
         const query = `fragment Teams on TeamConnection {
       nodes { name members { nodes { name: login } } }
@@ -18421,9 +18421,17 @@ async function run() {
     query { ${oqs.join("\n")} }`;
         const client = github.getOctokit(token);
         const data = await client.graphql(query);
-        dbg("Process result data");
+        dbg("Process result data: %o", data);
         const users = Object.values(data)
-            .map((org) => Object.values(org).map((orgTeams) => orgTeams.nodes.map((t) => t.members.nodes.map((user) => ({ team: t.name, user: user.name })))))
+            .map((org) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { name, ...tdata } = org;
+            return Object.values(tdata).map((orgTeams) => orgTeams.nodes.map((t) => t.members.nodes.map((user) => ({
+                org: org.name,
+                team: t.name,
+                user: user.name,
+            }))));
+        })
             .flat(4);
         dbg("Apply team filter to the users list");
         const filtered = users.filter(({ team }) => teams.some((t) => team === t.team));
@@ -18431,12 +18439,16 @@ async function run() {
         if (res) {
             dbg("User %s is member of given team: %s", res.user, res.team);
             core.info(`Found User ${res.user} is member of team ${res.team}`);
+            core.setOutput("orgName", res.org);
             core.setOutput("teamName", res.team);
             core.setOutput("userName", res.user);
         }
         else {
             dbg("Users %s not member of any of given teams", usernames.join(","));
-            core.info(`Users ${usernames.join(",")} not member of ${teams.join(",")}`);
+            core.info(`Users ${usernames.join(",")} not member of ${teams
+                .map((t) => `${t.org}/${t.team}`)
+                .join(" or ")}`);
+            core.setOutput("orgName", undefined);
             core.setOutput("teamName", undefined);
             core.setOutput("userName", undefined);
         }
