@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`action Happy Path: Output 1`] = `
+Array [
+  "orgName: ",
+  "teamName: bar",
+  "userName: user1",
+  "ismember: true",
+]
+`;
+
+exports[`action Happy Path: Query 1`] = `
+"
+    fragment Teams on TeamConnection {
+      nodes { name members { nodes { name: login } } }
+    }
+    query { 
+      foo: organization(login: \\"foo\\") { name bar: teams(first: 100, query: \\"bar\\") { ...Teams }
+baz: teams(first: 100, query: \\"baz\\") { ...Teams } }
+baz: organization(login: \\"baz\\") { name bar: teams(first: 100, query: \\"bar\\") { ...Teams } } 
+    }"
+`;
+
+exports[`action Should report negative: Output 1`] = `
+Array [
+  "orgName: ",
+  "teamName: ",
+  "userName: ",
+  "ismember: false",
+]
+`;
+
+exports[`action Should report negative: Query 1`] = `
+"
+    fragment Teams on TeamConnection {
+      nodes { name members { nodes { name: login } } }
+    }
+    query { 
+      foo: organization(login: \\"foo\\") { name bar: teams(first: 100, query: \\"bar\\") { ...Teams }
+baz: teams(first: 100, query: \\"baz\\") { ...Teams } }
+baz: organization(login: \\"baz\\") { name bar: teams(first: 100, query: \\"bar\\") { ...Teams } } 
+    }"
+`;
