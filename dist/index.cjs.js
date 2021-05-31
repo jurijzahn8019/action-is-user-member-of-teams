@@ -77,7 +77,7 @@ function toCommandValue(input) {
     return JSON.stringify(input);
 }
 exports.toCommandValue = toCommandValue;
-//# sourceMappingURL=utils.js.map
+
 });
 
 var command = createCommonjsModule(function (module, exports) {
@@ -171,7 +171,7 @@ function escapeProperty(s) {
         .replace(/:/g, '%3A')
         .replace(/,/g, '%2C');
 }
-//# sourceMappingURL=command.js.map
+
 });
 
 var fileCommand = createCommonjsModule(function (module, exports) {
@@ -215,7 +215,7 @@ function issueCommand(command, message) {
     });
 }
 exports.issueCommand = issueCommand;
-//# sourceMappingURL=file-command.js.map
+
 });
 
 var core = createCommonjsModule(function (module, exports) {
@@ -496,7 +496,7 @@ function getState(name) {
     return process.env[`STATE_${name}`] || '';
 }
 exports.getState = getState;
-//# sourceMappingURL=core.js.map
+
 });
 
 var context = createCommonjsModule(function (module, exports) {
@@ -548,7 +548,7 @@ class Context {
     }
 }
 exports.Context = Context;
-//# sourceMappingURL=context.js.map
+
 });
 
 function getProxyUrl(reqUrl) {
@@ -1455,7 +1455,7 @@ function getApiBaseUrl() {
     return process.env['GITHUB_API_URL'] || 'https://api.github.com';
 }
 exports.getApiBaseUrl = getApiBaseUrl;
-//# sourceMappingURL=utils.js.map
+
 });
 
 function getUserAgent() {
@@ -17298,7 +17298,7 @@ function getOctokitOptions(token, options) {
     return opts;
 }
 exports.getOctokitOptions = getOctokitOptions;
-//# sourceMappingURL=utils.js.map
+
 });
 
 var github = createCommonjsModule(function (module, exports) {
@@ -17336,7 +17336,7 @@ function getOctokit(token, options) {
     return new utils.GitHub(utils.getOctokitOptions(token, options));
 }
 exports.getOctokit = getOctokit;
-//# sourceMappingURL=github.js.map
+
 });
 
 /**
