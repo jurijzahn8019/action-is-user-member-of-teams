@@ -128,6 +128,6 @@ export async function run(): Promise<void> {
     exportVariable(varName, !!res);
   } catch (e) {
     dbg("Failed:", e);
-    setFailed(e.message);
+    setFailed((e as Error).message);
   }
 }
