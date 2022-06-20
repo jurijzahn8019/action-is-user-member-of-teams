@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.70](https://github.com/jurijzahn8019/action-is-user-member-of-teams/compare/v0.0.69...v0.0.70) (2022-06-20)
+
+
+### Features
+
+* **action:** migrate to ncc, node16 ([e0e85d2](https://github.com/jurijzahn8019/action-is-user-member-of-teams/commit/e0e85d2fc8087675740f23ced6575c2438efad2e))
+
 ### [0.0.69](https://github.com/jurijzahn8019/action-is-user-member-of-teams/compare/v0.0.68...v0.0.69) (2022-06-13)
 
 ### [0.0.68](https://github.com/jurijzahn8019/action-is-user-member-of-teams/compare/v0.0.67...v0.0.68) (2022-06-06)
