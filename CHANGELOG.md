@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.103](https://github.com/jurijzahn8019/action-is-user-member-of-teams/compare/v0.0.102...v0.0.103) (2023-02-06)
+
 ### [0.0.102](https://github.com/jurijzahn8019/action-is-user-member-of-teams/compare/v0.0.101...v0.0.102) (2023-01-30)
 
 ### [0.0.101](https://github.com/jurijzahn8019/action-is-user-member-of-teams/compare/v0.0.100...v0.0.101) (2023-01-23)
